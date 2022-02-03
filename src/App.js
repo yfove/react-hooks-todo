@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
   const [todoEditing, setTodoEditing] = useState(null);
   const [editingText, setEditingText] = useState("");
+  // save on local storage
+  useEffect(() => {
+    const temp = localStorage.getItem("todos");
+    const loadedTodos = JSON.parse(temp);
+
+    if (loadedTodos) {
+      setTodos(loadedTodos);
+    }
+  }, []);
+
+  // everytime todos change this function will run
+
+  useEffect(() => {
+    const temp = JSON.stringify(todos);
+    localStorage.setItem("todos", temp);
+  }, [todos]);
 
   function handleSubmit(e) {
     e.preventDefault();
